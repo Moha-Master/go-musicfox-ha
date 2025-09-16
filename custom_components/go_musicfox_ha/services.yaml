@@ -1,0 +1,3 @@
+activate_intelligent_mode:
+  name: Activate Intelligent Mode
+  description: Activates the intelligent (heartbeat) playback mode.

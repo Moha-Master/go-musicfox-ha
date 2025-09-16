@@ -1,0 +1,11 @@
+{
+  "domain": "go_musicfox_ha",
+  "name": "Go Musicfox HA",
+  "config_flow": true,
+  "documentation": "https://github.com/hongkailiu/go-musicfox-ha",
+  "issue_tracker": "https://github.com/hongkailiu/go-musicfox-ha/issues",
+  "codeowners": ["@hongkailiu"],
+  "requirements": ["aiohttp-sse-client"],
+  "version": "0.1.0",
+  "iot_class": "local_polling"
+}
