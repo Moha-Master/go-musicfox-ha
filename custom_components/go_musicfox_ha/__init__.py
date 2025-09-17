@@ -45,11 +45,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         while True:
             try:
-                _LOGGER.warning("SSE: Attempting to connect to: %s", sse_url)
+                _LOGGER.info("SSE: Attempting to connect to: %s", sse_url)
                 async with aiohttp.ClientSession(timeout=timeout) as session:
                     async with session.get(sse_url) as resp:
                         if resp.status == 200:
-                            _LOGGER.warning("SSE: Connection established.")
+                            _LOGGER.info("SSE: Connection established.")
                             async for line in resp.content:
                                 line = line.decode('utf-8').strip()
                                 if line.startswith("data:"):
@@ -73,7 +73,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 if entry.entry_id in hass.data[DOMAIN]:
                     hass.data[DOMAIN][entry.entry_id]["status"] = {}
                     async_dispatcher_send(hass, f"{DOMAIN}_{entry.entry_id}_update")
-                _LOGGER.warning("SSE: Connection closed. Reconnecting in %d seconds.", reconnect_delay)
+                _LOGGER.info("SSE: Connection closed. Reconnecting in %d seconds.", reconnect_delay)
                 await asyncio.sleep(reconnect_delay)
 
     def start_sse_task(event=None):

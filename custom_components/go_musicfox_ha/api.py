@@ -54,9 +54,25 @@ class GoMusicfoxAPI:
         """Send next_play_mode command."""
         await self._send_command("next_play_mode")
 
+    async def async_set_volume(self, volume: int) -> None:
+        """Set the volume."""
+        await self._send_command("set_volume", [str(volume)])
+
+    async def async_volume_up(self) -> None:
+        """Send volume_up command."""
+        await self._send_command("volume_up")
+
+    async def async_volume_down(self) -> None:
+        """Send volume_down command."""
+        await self._send_command("volume_down")
+
     async def async_activate_intelligent_mode(self) -> None:
         """Send activate_intelligent_mode command."""
         await self._send_command("activate_intelligent_mode")
+
+    async def async_seek(self, position_ns: int) -> None:
+        """Seek to a specific position (in nanoseconds)."""
+        await self._send_command("seek", [str(position_ns)])
 
     async def async_get_status(self) -> dict:
         """Get the current player status."""

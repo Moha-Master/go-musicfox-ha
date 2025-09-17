@@ -11,7 +11,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN, PLAY_MODE_MAP, PLAY_MODE_CODE_MAP
 from .api import GoMusicfoxAPI
 
-SELECTABLE_PLAY_MODES = {k: v for k, v in PLAY_MODE_MAP.items() if k != "intelligent"}
+SELECTABLE_PLAY_MODES = PLAY_MODE_MAP
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -23,7 +23,7 @@ async def async_setup_entry(
     device_info = DeviceInfo(
         identifiers={(DOMAIN, entry.entry_id)},
         name=entry.title,
-        manufacturer="go-musicfox-ha",
+        manufacturer="go-musicfox",
     )
     
     select_entity = PlayModeSelect(hass, api, entry, device_info)
@@ -36,13 +36,14 @@ class PlayModeSelect(SelectEntity):
     _attr_icon = "mdi:playlist-music"
     _attr_options = list(SELECTABLE_PLAY_MODES.values())
     _attr_should_poll = False
+    _attr_has_entity_name = True
 
     def __init__(self, hass: HomeAssistant, api: GoMusicfoxAPI, entry: ConfigEntry, device_info: DeviceInfo) -> None:
         """Initialize the select entity."""
         self.hass = hass
         self._api = api
         self._entry_id = entry.entry_id
-        self._attr_unique_id = f"{entry.entry_id}_play_mode"
+        self._attr_unique_id = f"{entry.entry_id}_musicfox_play_mode"
         self._attr_device_info = device_info
         self._attr_current_option = None
 
@@ -72,4 +73,8 @@ class PlayModeSelect(SelectEntity):
             (k for k, v in SELECTABLE_PLAY_MODES.items() if v == option), None
         )
         if backend_mode:
-            await self._api.async_set_play_mode(backend_mode)
+            if backend_mode == "intelligent":
+                # For intelligent mode, we need to activate it specially
+                await self._api.async_activate_intelligent_mode()
+            else:
+                await self._api.async_set_play_mode(backend_mode)

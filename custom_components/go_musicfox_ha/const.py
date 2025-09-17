@@ -1,6 +1,6 @@
 """Constants for the Go Musicfox HA integration."""
 
-DOMAIN = "go_musicfox_ha"
+DOMAIN = "go_musicfox"
 
 PLAY_MODES = ["ordered", "list_loop", "single_loop", "list_random", "inf_random", "intelligent"]
 

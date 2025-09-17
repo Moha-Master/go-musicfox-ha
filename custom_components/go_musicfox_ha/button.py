@@ -20,7 +20,7 @@ async def async_setup_entry(
     device_info = DeviceInfo(
         identifiers={(DOMAIN, entry.entry_id)},
         name=entry.title,
-        manufacturer="go-musicfox-ha",
+        manufacturer="go-musicfox",
     )
 
     buttons = [
@@ -32,6 +32,7 @@ async def async_setup_entry(
 class GoMusicfoxButton(ButtonEntity):
     """Base class for Go Musicfox buttons."""
     _attr_should_poll = False
+    _attr_has_entity_name = True
 
     def __init__(self, api: GoMusicfoxAPI, entry_id: str, device_info: DeviceInfo) -> None:
         """Initialize the button."""
@@ -41,17 +42,18 @@ class GoMusicfoxButton(ButtonEntity):
 class IntelligentModeButton(GoMusicfoxButton):
     """Representation of an intelligent mode button."""
 
-    _attr_name = "Activate Intelligent Mode"
-    _attr_icon = "mdi:heart-music"
+    _attr_name = "Intelligent Mode"
+    _attr_icon = "mdi:heart"
 
     def __init__(self, api: GoMusicfoxAPI, entry_id: str, device_info: DeviceInfo) -> None:
         """Initialize the button."""
         super().__init__(api, entry_id, device_info)
-        self._attr_unique_id = f"{entry_id}_intelligent_mode"
+        self._attr_unique_id = f"{entry_id}_musicfox_intelligent_mode"
 
     async def async_press(self) -> None:
         """Handle the button press."""
         await self._api.async_activate_intelligent_mode()
+
 
 class NextModeButton(GoMusicfoxButton):
     """Representation of a next mode button."""
@@ -62,7 +64,7 @@ class NextModeButton(GoMusicfoxButton):
     def __init__(self, api: GoMusicfoxAPI, entry_id: str, device_info: DeviceInfo) -> None:
         """Initialize the button."""
         super().__init__(api, entry_id, device_info)
-        self._attr_unique_id = f"{entry_id}_next_mode"
+        self._attr_unique_id = f"{entry_id}_musicfox_next_mode"
 
     async def async_press(self) -> None:
         """Handle the button press."""
