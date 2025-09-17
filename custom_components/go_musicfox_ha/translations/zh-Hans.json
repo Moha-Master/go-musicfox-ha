@@ -1,0 +1,81 @@
+{
+  "title": "Go Musicfox",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Go Musicfox HA",
+        "description": "输入 Go-Musicfox 的地址和端口。",
+        "data": {
+          "host": "地址",
+          "port": "端口"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "连接 Go Musicfox 失败。"
+    },
+    "abort": {
+      "already_configured": "此 Go Musicfox 已配置。"
+    }
+  },
+  "entity": {
+    "media_player": {
+      "musicfox": {
+        "name": "网易云音乐"
+      }
+    },
+    "sensor": {
+      "title": {
+        "name": "曲名"
+      },
+      "artist": {
+        "name": "歌手"
+      },
+      "play_mode": {
+        "name": "播放模式"
+      },
+      "lyric": {
+        "name": "歌词"
+      },
+      "is_logged_in": {
+        "name": "已登录"
+      },
+      "is_playing": {
+        "name": "正在播放"
+      },
+      "duration": {
+        "name": "音乐时长"
+      },
+      "playback_played": {
+        "name": "已播放时长"
+      },
+      "volume": {
+        "name": "音量"
+      },
+      "progress": {
+        "name": "播放进度"
+      }
+    },
+    "button": {
+      "intelligent_mode": {
+        "name": "心动模式"
+      },
+      "next_mode": {
+        "name": "播放模式切换"
+      }
+    },
+    "select": {
+      "play_mode": {
+        "name": "播放模式",
+        "state": {
+          "ordered": "顺序播放",
+          "list_loop": "列表循环",
+          "single_loop": "单曲循环",
+          "list_random": "列表随机",
+          "inf_random": "无限随机",
+          "intelligent": "心动模式"
+        }
+      }
+    }
+  }
+}

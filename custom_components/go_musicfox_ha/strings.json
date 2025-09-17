@@ -1,0 +1,81 @@
+{
+  "title": "Go Musicfox",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Go Musicfox HA",
+        "description": "Enter the host and port of your Go Musicfox server.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Go Musicfox server."
+    },
+    "abort": {
+      "already_configured": "This Go Musicfox server is already configured."
+    }
+  },
+  "entity": {
+    "media_player": {
+      "musicfox": {
+        "name": "Netease Music"
+      }
+    },
+    "sensor": {
+      "title": {
+        "name": "Title"
+      },
+      "artist": {
+        "name": "Artist"
+      },
+      "play_mode": {
+        "name": "Play Mode"
+      },
+      "lyric": {
+        "name": "Lyric"
+      },
+      "is_logged_in": {
+        "name": "Is Logged In"
+      },
+      "is_playing": {
+        "name": "Is Playing"
+      },
+      "duration": {
+        "name": "Duration"
+      },
+      "playback_played": {
+        "name": "Playback Played"
+      },
+      "volume": {
+        "name": "Volume"
+      },
+      "progress": {
+        "name": "Playback Progress"
+      }
+    },
+    "button": {
+      "intelligent_mode": {
+        "name": "Intelligent Mode"
+      },
+      "next_mode": {
+        "name": "Next Play Mode"
+      }
+    },
+    "select": {
+      "play_mode": {
+        "name": "Play Mode",
+        "state": {
+          "ordered": "Ordered",
+          "list_loop": "List Loop",
+          "single_loop": "Single Loop",
+          "list_random": "List Random",
+          "inf_random": "Infinite Random",
+          "intelligent": "Intelligent"
+        }
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, PLAY_MODE_MAP, PLAY_MODE_CODE_MAP
+from .const import DOMAIN, PLAY_MODE_CODE_MAP
 
 
 async def async_setup_entry(
@@ -69,7 +69,7 @@ class BaseGoMusicfoxSensor(SensorEntity):
 
 
 class SongTitleSensor(BaseGoMusicfoxSensor):
-    _attr_name = "Title"
+    _attr_translation_key = "title"
     _attr_icon = "mdi:music-note"
 
     def __init__(
@@ -84,7 +84,7 @@ class SongTitleSensor(BaseGoMusicfoxSensor):
 
 
 class ArtistSensor(BaseGoMusicfoxSensor):
-    _attr_name = "Artist"
+    _attr_translation_key = "artist"
     _attr_icon = "mdi:account-music"
 
     def __init__(
@@ -99,7 +99,7 @@ class ArtistSensor(BaseGoMusicfoxSensor):
 
 
 class PlayModeSensor(BaseGoMusicfoxSensor):
-    _attr_name = "Play Mode"
+    _attr_translation_key = "play_mode"
 
     def __init__(
         self, hass: HomeAssistant, entry: ConfigEntry, device_info: DeviceInfo
@@ -130,12 +130,11 @@ class PlayModeSensor(BaseGoMusicfoxSensor):
     def native_value(self) -> str | None:
         status = self.hass.data[DOMAIN][self._entry_id].get("status", {})
         mode_code = status.get("play_mode")
-        mode_str = PLAY_MODE_CODE_MAP.get(mode_code)
-        return PLAY_MODE_MAP.get(mode_str)
+        return PLAY_MODE_CODE_MAP.get(mode_code)
 
 
 class LyricSensor(BaseGoMusicfoxSensor):
-    _attr_name = "Lyric"
+    _attr_translation_key = "lyric"
     _attr_icon = "mdi:text-long"
 
     def __init__(
@@ -151,7 +150,7 @@ class LyricSensor(BaseGoMusicfoxSensor):
 
 
 class LoggedInSensor(BaseGoMusicfoxSensor):
-    _attr_name = "Is Logged In"
+    _attr_translation_key = "is_logged_in"
     _attr_icon = "mdi:login"
 
     def __init__(
@@ -166,8 +165,7 @@ class LoggedInSensor(BaseGoMusicfoxSensor):
 
 
 class IsPlayingSensor(BaseGoMusicfoxSensor):
-    """Sensor for is_playing status."""
-    _attr_name = "Is Playing"
+    _attr_translation_key = "is_playing"
 
     def __init__(
         self, hass: HomeAssistant, entry: ConfigEntry, device_info: DeviceInfo
@@ -190,7 +188,7 @@ class IsPlayingSensor(BaseGoMusicfoxSensor):
 
 class SongDurationSensor(BaseGoMusicfoxSensor):
     """Sensor for song duration."""
-    _attr_name = "Duration"
+    _attr_translation_key = "duration"
     _attr_icon = "mdi:timer"
     _attr_device_class = "duration"
     _attr_native_unit_of_measurement = "s"
@@ -224,7 +222,7 @@ class SongDurationSensor(BaseGoMusicfoxSensor):
 
 class PlaybackPlayedSensor(BaseGoMusicfoxSensor):
     """Sensor for playback played time."""
-    _attr_name = "Playback Played"
+    _attr_translation_key = "playback_played"
     _attr_icon = "mdi:progress-clock"
     _attr_device_class = "duration"
     _attr_native_unit_of_measurement = "s"
@@ -258,7 +256,7 @@ class PlaybackPlayedSensor(BaseGoMusicfoxSensor):
 
 class VolumeSensor(BaseGoMusicfoxSensor):
     """Sensor for volume."""
-    _attr_name = "Volume"
+    _attr_translation_key = "volume"
     _attr_icon = "mdi:volume-high"
     _attr_native_unit_of_measurement = "%"
 
@@ -275,7 +273,7 @@ class VolumeSensor(BaseGoMusicfoxSensor):
 
 class ProgressSensor(BaseGoMusicfoxSensor):
     """Sensor for playback progress percentage."""
-    _attr_name = "Playback Progress"
+    _attr_translation_key = "progress"
     _attr_icon = "mdi:percent"
     _attr_native_unit_of_measurement = "%"
 

@@ -42,7 +42,7 @@ class GoMusicfoxButton(ButtonEntity):
 class IntelligentModeButton(GoMusicfoxButton):
     """Representation of an intelligent mode button."""
 
-    _attr_name = "Intelligent Mode"
+    _attr_translation_key = "intelligent_mode"
     _attr_icon = "mdi:heart"
 
     def __init__(self, api: GoMusicfoxAPI, entry_id: str, device_info: DeviceInfo) -> None:
@@ -58,7 +58,7 @@ class IntelligentModeButton(GoMusicfoxButton):
 class NextModeButton(GoMusicfoxButton):
     """Representation of a next mode button."""
 
-    _attr_name = "Next Play Mode"
+    _attr_translation_key = "next_mode"
     _attr_icon = "mdi:shuffle-variant"
 
     def __init__(self, api: GoMusicfoxAPI, entry_id: str, device_info: DeviceInfo) -> None:

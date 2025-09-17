@@ -15,7 +15,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
 
 from .api import GoMusicfoxAPI
-from .const import DOMAIN, PLAY_MODE_MAP, PLAY_MODE_CODE_MAP
+from .const import DOMAIN, PLAY_MODE_CODE_MAP
 
 SUPPORT_GO_MUSICFOX = (
     MediaPlayerEntityFeature.PLAY
@@ -25,7 +25,8 @@ SUPPORT_GO_MUSICFOX = (
     | MediaPlayerEntityFeature.VOLUME_SET
     | MediaPlayerEntityFeature.VOLUME_STEP
     | MediaPlayerEntityFeature.SEEK
-    | MediaPlayerEntityFeature.SELECT_SOURCE  # For play mode selection
+    | MediaPlayerEntityFeature.SHUFFLE_SET
+    | MediaPlayerEntityFeature.REPEAT_SET
 )
 
 async def async_setup_entry(
@@ -46,7 +47,9 @@ async def async_setup_entry(
 class GoMusicfoxMediaPlayer(MediaPlayerEntity):
     """Representation of a Go Musicfox media player."""
 
-    _attr_name = "Netease Music"
+    _attr_translation_key = "musicfox"
+    _attr_has_entity_name = True
+    _attr_name = None
     _attr_supported_features = SUPPORT_GO_MUSICFOX
     _attr_icon = "mdi:disc-player"
     _attr_should_poll = False
@@ -112,7 +115,7 @@ class GoMusicfoxMediaPlayer(MediaPlayerEntity):
         mode_code = status.get("play_mode")
         mode_str = PLAY_MODE_CODE_MAP.get(mode_code)
         self._attr_extra_state_attributes = {
-            "play_mode": PLAY_MODE_MAP.get(mode_str),
+            "play_mode": mode_str,
             "is_logged_in": status.get("is_logged_in"),
             "lyric": (status.get("lyric") or "").split('\n')[0],
             "raw_status": str(status),
@@ -129,11 +132,6 @@ class GoMusicfoxMediaPlayer(MediaPlayerEntity):
             
         # Set shuffle mode
         self._attr_shuffle = mode_str in ["list_random", "inf_random"]
-        
-        # Set source (play mode)
-        self._attr_source = PLAY_MODE_MAP.get(mode_str)
-        self._attr_source_list = list(PLAY_MODE_MAP.values())
-        
         self.async_write_ha_state()
 
     async def async_media_play(self) -> None:
@@ -164,19 +162,6 @@ class GoMusicfoxMediaPlayer(MediaPlayerEntity):
         """Seek to a specific position."""
         await self._api.async_seek(int(position * 1_000_000_000))
         
-    async def async_select_source(self, source: str) -> None:
-        """Select input source."""
-        # Find the backend mode for the selected source
-        backend_mode = next(
-            (k for k, v in PLAY_MODE_MAP.items() if v == source), None
-        )
-        if backend_mode:
-            if backend_mode == "intelligent":
-                # For intelligent mode, we need to activate it specially
-                await self._api.async_activate_intelligent_mode()
-            else:
-                await self._api.async_set_play_mode(backend_mode)
-                
     async def async_set_repeat(self, repeat: str) -> None:
         """Set repeat mode."""
         # Map Home Assistant repeat modes to go-musicfox modes
@@ -197,7 +182,5 @@ class GoMusicfoxMediaPlayer(MediaPlayerEntity):
         else:
             # Disable shuffle - use ordered as default
             await self._api.async_set_play_mode("ordered")
-            
-    async def async_next_play_mode(self) -> None:
-        """Switch to next play mode."""
-        await self._api.async_next_play_mode()
+        
+    

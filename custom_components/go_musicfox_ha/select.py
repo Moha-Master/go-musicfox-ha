@@ -8,10 +8,10 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, PLAY_MODE_MAP, PLAY_MODE_CODE_MAP
+from .const import DOMAIN, PLAY_MODES, PLAY_MODE_CODE_MAP
 from .api import GoMusicfoxAPI
 
-SELECTABLE_PLAY_MODES = PLAY_MODE_MAP
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -32,11 +32,11 @@ async def async_setup_entry(
 class PlayModeSelect(SelectEntity):
     """Representation of a play mode select entity."""
 
-    _attr_name = "Play Mode"
-    _attr_icon = "mdi:playlist-music"
-    _attr_options = list(SELECTABLE_PLAY_MODES.values())
-    _attr_should_poll = False
+    _attr_translation_key = "play_mode"
     _attr_has_entity_name = True
+    _attr_icon = "mdi:playlist-music"
+    _attr_options = PLAY_MODES
+    _attr_should_poll = False
 
     def __init__(self, hass: HomeAssistant, api: GoMusicfoxAPI, entry: ConfigEntry, device_info: DeviceInfo) -> None:
         """Initialize the select entity."""
@@ -63,18 +63,13 @@ class PlayModeSelect(SelectEntity):
         """Handle status updates."""
         status = self.hass.data[DOMAIN][self._entry_id].get("status", {})
         mode_code = status.get("play_mode")
-        mode_str = PLAY_MODE_CODE_MAP.get(mode_code)
-        self._attr_current_option = PLAY_MODE_MAP.get(mode_str)
+        self._attr_current_option = PLAY_MODE_CODE_MAP.get(mode_code)
         self.async_write_ha_state()
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        backend_mode = next(
-            (k for k, v in SELECTABLE_PLAY_MODES.items() if v == option), None
-        )
-        if backend_mode:
-            if backend_mode == "intelligent":
-                # For intelligent mode, we need to activate it specially
-                await self._api.async_activate_intelligent_mode()
-            else:
-                await self._api.async_set_play_mode(backend_mode)
+        if option == "intelligent":
+            # For intelligent mode, we need to activate it specially
+            await self._api.async_activate_intelligent_mode()
+        else:
+            await self._api.async_set_play_mode(option)
