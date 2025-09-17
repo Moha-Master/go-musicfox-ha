@@ -32,7 +32,15 @@
         "name": "Artist"
       },
       "play_mode": {
-        "name": "Play Mode"
+        "name": "Play Mode",
+        "state": {
+          "ordered": "Ordered",
+          "list_loop": "List Loop",
+          "single_loop": "Single Loop",
+          "list_random": "List Random",
+          "inf_random": "Infinite Random",
+          "intelligent": "Intelligent"
+        }
       },
       "lyric": {
         "name": "Lyric"

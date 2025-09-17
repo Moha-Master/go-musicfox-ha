@@ -1,14 +1,14 @@
 """Sensor platform for Go Musicfox HA."""
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, PLAY_MODE_CODE_MAP
+from .const import DOMAIN, PLAY_MODES, PLAY_MODE_CODE_MAP
 
 
 async def async_setup_entry(
@@ -100,6 +100,8 @@ class ArtistSensor(BaseGoMusicfoxSensor):
 
 class PlayModeSensor(BaseGoMusicfoxSensor):
     _attr_translation_key = "play_mode"
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = PLAY_MODES
 
     def __init__(
         self, hass: HomeAssistant, entry: ConfigEntry, device_info: DeviceInfo
